@@ -11,11 +11,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 
@@ -74,6 +76,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+
+        //Find sold button view
+        Button soldButton = findViewById(R.id.sale_button);
+
+        //Set up on item click listener on sold button
+        soldButton.setOnItemClickListener (new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //Form the content URI that represents the specific book whose sold button was clicked
+                //and append ID
+                Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+
+                //Call the bookSold method and pass in the Uri
+                bookSold(currentBookUri, values, null, null);
+            }
+        });
+
 
         //Kickoff loader
         getLoaderManager().initLoader(BOOK_LOADER, null, this);
@@ -164,69 +183,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 }
 
-
-    /**
-     * helper method to display information from books db in TextView
-
-
-    private void displayDatabaseInfo() {
-        BookDbHelper mDbHelper = new BookDbHelper(this);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                BookEntry._ID,
-                BookEntry.COLUMN_BOOK_NAME,
-                BookEntry.COLUMN_BOOK_PRICE,
-                BookEntry.COLUMN_BOOK_QUANTITY,
-                BookEntry.COLUMN_BOOK_SUPPLIER,
-                BookEntry.COLUMN_SUPPLIER_PHONE
-        };
-
-        Cursor cursor = db.query(
-                BookEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        TextView displayView = (TextView) findViewById(R.id.text_view);
-
-        try {
-            //Create header that displays column names
-            displayView.setText(("Books database contains " + cursor.getCount() + " books.\n\n"));
-            displayView.append(BookEntry._ID + " - " +
-                    BookEntry.COLUMN_BOOK_NAME + " - " +
-                    BookEntry.COLUMN_BOOK_PRICE + " - " +
-                    BookEntry.COLUMN_BOOK_QUANTITY + " - " +
-                    BookEntry.COLUMN_BOOK_SUPPLIER + " - " +
-                    BookEntry.COLUMN_SUPPLIER_PHONE);
-
-            //Find index of each column
-            int idColumnIndex = cursor.getColumnIndex(BookEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
-            int supplierColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER);
-            int phoneColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_PHONE);
-
-            //Iterate through all returned rows in the cursor
-            while (cursor.moveToNext()) {
-                //use index to extract String or int value of current row
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                int currentPrice = cursor.getInt(priceColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentSupplier = cursor.getString(supplierColumnIndex);
-                String currentPhone = cursor.getString(phoneColumnIndex);
-
-                //Display values in the TextView
-                displayView.append(("\n" + currentID + " - " +
-                        currentName + " - " + currentPrice + " - " + currentQuantity + " - " +
-                        currentSupplier + " - " + currentPhone));
-            }
-        } finally {
-            cursor.close();
-        }*/
 

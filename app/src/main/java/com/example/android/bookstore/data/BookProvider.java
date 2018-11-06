@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.example.android.bookstore.data.BookContract.BookEntry;
 
 public class BookProvider extends ContentProvider {
@@ -222,6 +224,30 @@ public class BookProvider extends ContentProvider {
         return rowsUpdated;
     }
 
+
+    /** helper method to reduce the quantity of books when one is sold */
+    public int bookSold() {Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    //Get writeable database to update the data
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
+
+        //find quantity value and assign to a variable
+        int bookQuantity = cursor.getInt(quantityColumnIndex);
+
+        //reduce quantity by one
+        if (bookQuantity > 0) {
+            bookQuantity = bookQuantity - 1;
+            return bookQuantity;
+        } else if (bookQuantity = 0) {
+            Toast.makeText(this, "Book cannot be sold if quantity is 0", Toast.LENGTH_SHORT).show();
+        } else {
+            return null;
+        }
+    }
+
+    }
+
     /**
      * Delete the data at the given selection and selection arguments.
      */
@@ -273,5 +299,9 @@ public class BookProvider extends ContentProvider {
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
     }
+
+
+
+
 
 }
