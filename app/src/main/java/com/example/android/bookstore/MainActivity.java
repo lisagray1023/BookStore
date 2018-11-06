@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import com.example.android.bookstore.data.BookContract.BookEntry;
+import android.widget.AdapterView.OnItemClickListener;
 
 
 /**

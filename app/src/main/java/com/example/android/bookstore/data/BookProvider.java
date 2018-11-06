@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.android.bookstore.MainActivity;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 
 public class BookProvider extends ContentProvider {
@@ -226,7 +227,7 @@ public class BookProvider extends ContentProvider {
 
 
     /** helper method to reduce the quantity of books when one is sold */
-    public int bookSold() {Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int bookSold(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
     //Get writeable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -237,16 +238,15 @@ public class BookProvider extends ContentProvider {
 
         //reduce quantity by one
         if (bookQuantity > 0) {
-            bookQuantity = bookQuantity - 1;
+            int newBookQuantity = bookQuantity - 1;
+            return newBookQuantity;
+        } else if (bookQuantity == 0)
+            Toast.makeText("Book cannot be sold if quantity is 0", MainActivity, Toast.LENGTH_SHORT).show();
+        else {
             return bookQuantity;
-        } else if (bookQuantity = 0) {
-            Toast.makeText(this, "Book cannot be sold if quantity is 0", Toast.LENGTH_SHORT).show();
-        } else {
-            return null;
         }
     }
 
-    }
 
     /**
      * Delete the data at the given selection and selection arguments.
