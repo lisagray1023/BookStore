@@ -15,7 +15,9 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/category_overview" />
+            android:text="@string/category_overview"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
         <!-- Input fields -->
         <LinearLayout
@@ -28,12 +30,16 @@
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:hint="@string/hint_book_name"
                 android:inputType="textCapWords" />
 
             <!-- Price field -->
             <EditText
                 android:id="@+id/edit_book_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:hint="@string/hint_book_price"
                 android:inputType="number" />
 
