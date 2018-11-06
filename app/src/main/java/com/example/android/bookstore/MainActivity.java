@@ -22,6 +22,8 @@ import android.widget.ListView;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 import android.widget.AdapterView.OnItemClickListener;
 
+import java.util.Set;
+
 
 /**
  * Inserts and reads data entered into and stored into the books database
@@ -78,21 +80,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        //Find sold button view
-        Button soldButton = findViewById(R.id.sale_button);
 
-        //Set up on item click listener on sold button
-        soldButton.setOnItemClickListener (new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //Form the content URI that represents the specific book whose sold button was clicked
-                //and append ID
-                Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
-
-                //Call the bookSold method and pass in the Uri
-                bookSold(currentBookUri, values, null, null);
-            }
-        });
 
 
         //Kickoff loader

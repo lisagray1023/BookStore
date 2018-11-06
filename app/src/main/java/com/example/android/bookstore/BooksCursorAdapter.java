@@ -1,14 +1,23 @@
 package com.example.android.bookstore;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.bookstore.data.BookContract;
+
+import java.util.Set;
 
 /**
  * {@link BooksCursorAdapter} is an adapter for a list or grid view
@@ -17,15 +26,18 @@ import com.example.android.bookstore.data.BookContract;
  */
 public class BooksCursorAdapter extends CursorAdapter {
 
+
     /**
      * Constructs a new {@link BooksCursorAdapter}.
      *
      * @param context The context
-     * @param c       The cursor from which to get the data.
+     * @param cursor       The cursor from which to get the data.
      */
-    public BooksCursorAdapter(Context context, Cursor c) {
-        super(context, c, 0 /* flags */);
+    public BooksCursorAdapter(Context context, Cursor cursor) {
+        super(context, cursor, 0 /* flags */);
+
     }
+
 
     /**
      * Makes a new blank list item view. No data is set (or bound) to the views yet.
@@ -73,4 +85,43 @@ public class BooksCursorAdapter extends CursorAdapter {
         priceTextView.setText(Integer.toString(bookPrice));
         quantityTextView.setText(Integer.toString(bookQuantity));
     }
+
+
+    /**helper method to reduce the quantity of books when one is sold
+     public int bookSold(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+     //Get writeable database to update the data
+     SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+     int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
+
+     //find quantity value and assign to a variable
+     int bookQuantity = cursor.getInt(quantityColumnIndex);
+
+     //reduce quantity by one
+     if (bookQuantity > 0) {
+     int newBookQuantity = bookQuantity - 1;
+     return newBookQuantity;
+     } else if (bookQuantity == 0)
+     Toast.makeText("Book cannot be sold if quantity is 0", MainActivity, Toast.LENGTH_SHORT).show();
+     else {
+     return bookQuantity;
+     }
+     } */
+
+
+    /**Find sold button view
+    Button soldButton = findViewById(R.id.sale_button);
+
+    //Set up on item click listener on sold button
+     soldButton.setOnItemClickListener (new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+    //Form the content URI that represents the specific book whose sold button was clicked
+    //and append ID
+    Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+
+    //Call the bookSold method and pass in the Uri
+    bookSold(currentBookUri, values, null, null);
+    }
+    }); */
 }

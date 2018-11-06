@@ -226,26 +226,7 @@ public class BookProvider extends ContentProvider {
     }
 
 
-    /** helper method to reduce the quantity of books when one is sold */
-    public int bookSold(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-    //Get writeable database to update the data
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
-
-        //find quantity value and assign to a variable
-        int bookQuantity = cursor.getInt(quantityColumnIndex);
-
-        //reduce quantity by one
-        if (bookQuantity > 0) {
-            int newBookQuantity = bookQuantity - 1;
-            return newBookQuantity;
-        } else if (bookQuantity == 0)
-            Toast.makeText("Book cannot be sold if quantity is 0", MainActivity, Toast.LENGTH_SHORT).show();
-        else {
-            return bookQuantity;
-        }
-    }
 
 
     /**
