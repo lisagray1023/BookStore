@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -150,9 +151,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 intent.setData(Uri.parse("tel:" + supplierPhoneNumber()));
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
+            } else {
+                    Log.e("EditorActivity", "Can't resolve app for action_dial intent");
                 }
-            }
-        });
+        }
+    });
     }
 
     /** helper method to format phone number into raw number sequence needed for intent */
