@@ -19,8 +19,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.example.android.bookstore.data.BookContract;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import java.util.Set;
 
@@ -80,11 +83,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-
-
-
         //Kickoff loader
         getLoaderManager().initLoader(BOOK_LOADER, null, this);
+
+        /**Set up item click listener on Book Sold button
+        final Button soldButton = (Button) findViewById(R.id.sale_button);
+        soldButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                int quantityColumnIndex = getLoaderManager().getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
+
+                ContentValues values = new ContentValules();
+                values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+                Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+                Toast.makeText(this, "Book sold, database updated", Toast.LENGTH_SHORT).show();
+            }
+        }); */
     }
 
 

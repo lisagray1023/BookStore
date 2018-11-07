@@ -34,7 +34,7 @@ public class BooksCursorAdapter extends CursorAdapter {
      * @param cursor       The cursor from which to get the data.
      */
     public BooksCursorAdapter(Context context, Cursor cursor) {
-        super(context, cursor, 0 /* flags */);
+        super(context, cursor, 0 );
 
     }
 
@@ -88,7 +88,29 @@ public class BooksCursorAdapter extends CursorAdapter {
 
 
     /**helper method to reduce the quantity of books when one is sold
-     public int bookSold(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int bookSold(View view, Cursor cursor) {
+
+     //Find sold button view
+     Button soldButton = (Button) view.findViewById(R.id.sale_button);
+
+     //Find column for quantity
+      int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
+
+      //Extract the value in the quantity attribute and store it in a variable
+        int bookQuantity = cursor.getInt(quantityColumnIndex);
+
+        //Update the quantity value to represent 1 book sold
+        if (bookQuantity == 0) {
+            Toast.makeText(this, getString(R.string.sale_not_possible), Toast.LENGTH_SHORT).show();
+            return bookQuantity;
+        } else {
+            int newBookQuantity = bookQuantity - 1;
+            return newBookQuantity;
+        }
+
+
+
+
      //Get writeable database to update the data
      SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -106,11 +128,11 @@ public class BooksCursorAdapter extends CursorAdapter {
      else {
      return bookQuantity;
      }
-     } */
+     }
 
 
-    /**Find sold button view
-    Button soldButton = findViewById(R.id.sale_button);
+
+
 
     //Set up on item click listener on sold button
      soldButton.setOnItemClickListener (new View.OnClickListener() {

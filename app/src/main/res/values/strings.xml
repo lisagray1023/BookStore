@@ -26,4 +26,6 @@
     <string name="editor_delete_book_successful">Book deleted</string>
     <string name="editor_delete_book_failed">Error with deleting book</string>
     <string name="sale_button">Book Sold</string>
+    <string name="sale_not_possible">Book cannot be sold if quantity is 0</string>
+    <string name="call_supplier">Call Supplier</string>
 </resources>

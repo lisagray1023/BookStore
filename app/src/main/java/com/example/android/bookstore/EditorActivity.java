@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -52,11 +53,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /** EditText field to enter the book's quantity */
     private EditText mQuantityEditText;
 
+    /** Button to increase book quantity */
+    private Button mQuantityIncreaseButton;
+
+    /** Button to decrease book quantity */
+    private Button mQuantityDecreaseButton;
+
     /** EditText field to enter the book's supplier name */
     private EditText mSupplierNameEditText;
 
     /** EditText field to enter the book's supplier phone number */
     private EditText mSupplierPhoneEditText;
+
+    /** Button to call supplier */
+    private Button mCallSupplierButton;
 
     /** will be true if user has updated part of book form */
     private boolean mBookHasChanged = false;
@@ -103,6 +113,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText = (EditText) findViewById(R.id.edit_book_quantity);
         mSupplierNameEditText = (EditText) findViewById(R.id.edit_book_supplier);
         mSupplierPhoneEditText = (EditText) findViewById(R.id.edit_book_phone);
+        mQuantityIncreaseButton = findViewById(R.id.quantity_increase);
+        mQuantityDecreaseButton = findViewById(R.id.quantity_decrease);
+        mCallSupplierButton = findViewById(R.id.call_supplier_button);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -112,8 +125,41 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSupplierNameEditText.setOnTouchListener(mTouchListener);
         mSupplierPhoneEditText.setOnTouchListener(mTouchListener);
+        mQuantityIncreaseButton.setOnTouchListener(mTouchListener);
+        mQuantityDecreaseButton.setOnTouchListener(mTouchListener);
+
+        mQuantityIncreaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setStringQuantity("add");
+            }
+        });
+
+        mQuantityDecreaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setStringQuantity("minus");
+            }
+        });
+
+
+        mCallSupplierButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + supplierPhoneNumber()));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
+    /** helper method to format phone number into raw number sequence needed for intent */
+    private String supplierPhoneNumber() {
+        String raw_phone = mSupplierPhoneEditText.getText().toString();
+        return raw_phone.replaceAll("[^\\d]", "");
+    }
 
     /** get user input from editor and save book into database
      *
@@ -402,5 +448,30 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         //Close the activity
         finish();
     }
+
+    /** helper method to update the quantity in the EditText view */
+    private void setStringQuantity (String method) {
+        String stringQuantity = mQuantityEditText.getText().toString();
+        int currentQuantity;
+        if (TextUtils.isEmpty(stringQuantity)) {
+            currentQuantity = 0;
+        } else {
+            currentQuantity = Integer.parseInt(stringQuantity);
+        }
+
+        switch(method) {
+            case "add":
+                currentQuantity++;
+                break;
+            case "minus":
+                if (currentQuantity != 0) {
+                    currentQuantity--;
+                }
+                break;
+        }
+        mQuantityEditText.setText(String.valueOf(currentQuantity));
+    }
+
+
 
 }
