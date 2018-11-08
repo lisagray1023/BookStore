@@ -148,13 +148,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
     }
-
-
-    /** helper method to format phone number into raw number sequence needed for intent */
-    private String supplierPhoneNumber() {
-        String raw_phone = mSupplierPhoneEditText.getText().toString();
-        return raw_phone.replaceAll("[^\\d]", "");
-    }
+    
 
     /** get user input from editor and save book into database
      *
