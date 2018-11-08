@@ -72,6 +72,7 @@ public class BooksCursorAdapter extends CursorAdapter {
         int nameColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_NAME);
         int priceColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_PRICE);
         int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
+        int idColumnIndex = cursor.getColumnIndex(BookEntry. _ID);
 
         //Read the book attributes from the cursor for the current book
         String bookName = cursor.getString(nameColumnIndex);
@@ -82,6 +83,7 @@ public class BooksCursorAdapter extends CursorAdapter {
         nameTextView.setText(bookName);
         priceTextView.setText(Integer.toString(bookPrice));
         quantityTextView.setText(Integer.toString(bookQuantity));
+        soldButton.setText(cursor.getString(idColumnIndex));
 
         //set up Click Listener on the soldButton
         soldButton.setOnClickListener(new View.OnClickListener() {
