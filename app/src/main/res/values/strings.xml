@@ -28,4 +28,6 @@
     <string name="sale_button">Book Sold</string>
     <string name="sale_not_possible">Book cannot be sold if quantity is 0</string>
     <string name="call_supplier">Call Supplier</string>
+    <string name="quantity_updated">Book sold, quantity updated</string>
+    <string name="quantity_update_error">Error updating quantity</string>
 </resources>

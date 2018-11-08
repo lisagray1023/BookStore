@@ -4,20 +4,17 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.android.bookstore.data.BookContract;
+import com.example.android.bookstore.data.BookContract.BookEntry;
 
-import java.util.Set;
 
 /**
  * {@link BooksCursorAdapter} is an adapter for a list or grid view
@@ -64,11 +61,12 @@ public class BooksCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         //Find individual views to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
-        TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
+        final TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
+        final Button soldButton = (Button) view.findViewById(R.id.sale_button);
 
         //Find columns of book attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_NAME);
@@ -84,66 +82,34 @@ public class BooksCursorAdapter extends CursorAdapter {
         nameTextView.setText(bookName);
         priceTextView.setText(Integer.toString(bookPrice));
         quantityTextView.setText(Integer.toString(bookQuantity));
+
+        //set up Click Listener on the soldButton
+        soldButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //get current quantity from TextView
+                int updateQuantity = Integer.parseInt(quantityTextView.getText().toString().trim());
+                if (updateQuantity > 0) {
+                    updateQuantity -= 1;
+                    quantityTextView.setText(Integer.toString(updateQuantity));
+                    //get id from view
+                    long id_number = Integer.parseInt(soldButton.getText().toString());
+                    Uri bookSelected = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id_number);
+                    ContentValues values = new ContentValues();
+                    values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantityTextView.getText().toString());
+                    //update database
+                    int rowsAffected = context.getContentResolver().update(bookSelected, values, null, null);
+                    //confirm whether quantity was updated or not
+                    if (rowsAffected == 0) {
+                        Toast.makeText(context, R.string.quantity_update_error, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, R.string.quantity_updated, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, R.string.sale_not_possible, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
     }
 
-
-    /**helper method to reduce the quantity of books when one is sold
-    public int bookSold(View view, Cursor cursor) {
-
-     //Find sold button view
-     Button soldButton = (Button) view.findViewById(R.id.sale_button);
-
-     //Find column for quantity
-      int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
-
-      //Extract the value in the quantity attribute and store it in a variable
-        int bookQuantity = cursor.getInt(quantityColumnIndex);
-
-        //Update the quantity value to represent 1 book sold
-        if (bookQuantity == 0) {
-            Toast.makeText(this, getString(R.string.sale_not_possible), Toast.LENGTH_SHORT).show();
-            return bookQuantity;
-        } else {
-            int newBookQuantity = bookQuantity - 1;
-            return newBookQuantity;
-        }
-
-
-
-
-     //Get writeable database to update the data
-     SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
-     int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
-
-     //find quantity value and assign to a variable
-     int bookQuantity = cursor.getInt(quantityColumnIndex);
-
-     //reduce quantity by one
-     if (bookQuantity > 0) {
-     int newBookQuantity = bookQuantity - 1;
-     return newBookQuantity;
-     } else if (bookQuantity == 0)
-     Toast.makeText("Book cannot be sold if quantity is 0", MainActivity, Toast.LENGTH_SHORT).show();
-     else {
-     return bookQuantity;
-     }
-     }
-
-
-
-
-
-    //Set up on item click listener on sold button
-     soldButton.setOnItemClickListener (new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-    //Form the content URI that represents the specific book whose sold button was clicked
-    //and append ID
-    Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
-
-    //Call the bookSold method and pass in the Uri
-    bookSold(currentBookUri, values, null, null);
-    }
-    }); */
 }
