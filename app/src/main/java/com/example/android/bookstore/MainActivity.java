@@ -23,7 +23,10 @@ import android.widget.ListView;
 import com.example.android.bookstore.data.BookContract;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.Set;
 
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+
 
         //Kickoff loader
         getLoaderManager().initLoader(BOOK_LOADER, null, this);

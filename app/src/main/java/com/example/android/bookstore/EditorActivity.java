@@ -148,7 +148,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
     }
-    
+
 
     /** get user input from editor and save book into database
      *

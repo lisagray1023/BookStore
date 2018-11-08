@@ -6,7 +6,7 @@
     <string name="editor_activity_title_add_book">Add a Book</string>
     <string name="editor_activity_title_edit_book">Edit Book</string>
     <string name="hint_book_name">Book Title</string>
-    <string name="hint_book_price">Price</string>
+    <string name="hint_book_price">Price $</string>
     <string name="hint_book_quantity">Quantity</string>
     <string name="hint_book_supplier">Supplier</string>
     <string name="hint_book_phone">Supplier Phone Number</string>
@@ -30,4 +30,5 @@
     <string name="call_supplier">Call Supplier</string>
     <string name="quantity_updated">Book sold, quantity updated</string>
     <string name="quantity_update_error">Error updating quantity</string>
+    <string name="books_remaining"> Books Remaining</string>
 </resources>
