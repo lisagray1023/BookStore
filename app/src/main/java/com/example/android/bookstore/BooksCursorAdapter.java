@@ -66,7 +66,8 @@ public class BooksCursorAdapter extends CursorAdapter {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
         final TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
-        final Button soldButton = (Button) view.findViewById(R.id.sale_button);
+        final TextView soldButton = (TextView) view.findViewById(R.id.sale_button);
+        final TextView saleTextView = (TextView) view.findViewById(R.id.sale_view);
 
         //Find columns of book attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_NAME);
@@ -83,7 +84,7 @@ public class BooksCursorAdapter extends CursorAdapter {
         nameTextView.setText(bookName);
         priceTextView.setText(Integer.toString(bookPrice));
         quantityTextView.setText(Integer.toString(bookQuantity));
-        soldButton.setText(cursor.getString(idColumnIndex));
+        saleTextView.setText(cursor.getString(idColumnIndex));
 
         //set up Click Listener on the soldButton
         soldButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +95,7 @@ public class BooksCursorAdapter extends CursorAdapter {
                     updateQuantity -= 1;
                     quantityTextView.setText(Integer.toString(updateQuantity));
                     //get id from view
-                    long id_number = Integer.parseInt(soldButton.getText().toString());
+                    long id_number = Integer.parseInt(saleTextView.getText().toString());
                     Uri bookSelected = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id_number);
                     ContentValues values = new ContentValues();
                     values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantityTextView.getText().toString());

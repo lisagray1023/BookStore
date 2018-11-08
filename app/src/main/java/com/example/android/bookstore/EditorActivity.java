@@ -108,6 +108,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityDecreaseButton = findViewById(R.id.quantity_decrease);
         mCallSupplierButton = findViewById(R.id.call_supplier_button);
 
+
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
         // or not, if the user tries to leave the editor without saving.
@@ -138,15 +139,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + supplierPhoneNumber()));
+                intent.setData(Uri.parse("tel:" + mSupplierPhoneEditText.getText().toString()));
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-            } else {
+                } else {
                     Log.e("EditorActivity", "Can't resolve app for action_dial intent");
                 }
-        }
-    });
+            }
+        });
     }
+
 
     /** helper method to format phone number into raw number sequence needed for intent */
     private String supplierPhoneNumber() {
