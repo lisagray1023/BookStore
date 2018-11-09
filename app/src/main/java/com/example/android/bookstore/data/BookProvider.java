@@ -129,10 +129,17 @@ public class BookProvider extends ContentProvider {
             throw new IllegalArgumentException("Book requires valid quantity");
         }
 
-        //NO need to check for supplier, any value is valid including null
-        //TODO need to add checks here as I believe supplier name and phone are required
+        //Check that supplier name is not null
+        String supplier = values.getAsString(BookEntry.COLUMN_BOOK_SUPPLIER);
+        if (supplier == null) {
+            throw new IllegalArgumentException("Book requires supplier info");
+        }
 
-        //Check for supplier phone number
+        //Check that supplier phone number contains 10 digits
+        String phoneNumber = values.getAsString(BookEntry.COLUMN_SUPPLIER_PHONE);
+        if (phoneNumber == null || (phoneNumber.length()) < 10) {
+            throw new IllegalArgumentException("Valid phone number required");
+        }
 
         //Insert a new book into the books database table with the given ContentValues
         //Get writable database
@@ -204,6 +211,23 @@ public class BookProvider extends ContentProvider {
                 throw new IllegalArgumentException("Book requires valid quantity");
             }
         }
+
+        //If BookEntry.COLUMN_BOOK_SUPPLIER key is present, check that the name value is not null
+        if (values.containsKey(BookEntry.COLUMN_BOOK_SUPPLIER)) {
+            String supplier = values.getAsString(BookEntry.COLUMN_BOOK_SUPPLIER);
+            if (supplier == null) {
+                throw new IllegalArgumentException("Book requires supplier info");
+            }
+        }
+
+        //If BookEntry.COLUMN_SUPPLIER_PHONE key is present, check that value is valid
+        if (values.containsKey(BookEntry.COLUMN_SUPPLIER_PHONE)) {
+            String phone = values.getAsString(BookEntry.COLUMN_SUPPLIER_PHONE);
+            if (phone == null || (phone.length()) < 10) {
+                throw new IllegalArgumentException("Supplier requires valid phone number");
+            }
+        }
+
 
         //If there are no values to update, don't try to update db
         if (values.size() == 0) {
