@@ -145,7 +145,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 } else {
-                    Log.e("EditorActivity", "Can't resolve app for action_dial intent");
                 }
             }
         });
@@ -172,7 +171,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if(mCurrentBookUri == null && TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString) ||
                 TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(supplierString) ||
-                TextUtils.isEmpty(phoneString) || phoneString.length() < 10) {
+                TextUtils.isEmpty(phoneString) || phoneString.length() != 10) {
             Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
             return;
         }
