@@ -153,7 +153,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /** get user input from editor and save book into database
      *
      */
-    private void saveBook() {
+    private boolean saveBook() {
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
@@ -165,7 +165,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if(mCurrentBookUri == null && TextUtils.isEmpty(nameString) &&
                 TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString)
                 && TextUtils.isEmpty(supplierString) && TextUtils.isEmpty(phoneString)) {
-            return; }
+            return true; }
             //This means no fields were modified, return early without creatinng a new book
 
             //Check for any null or invalid data
@@ -173,7 +173,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (dataValidation == false) {
                     Log.e("EditorActivity", "Invalid data");
                     Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
-                    return; }
+                    return false; }
 
         //Create a ContentValues object where column names are keys and book attributes are the values
         ContentValues values = new ContentValues();
@@ -193,9 +193,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 //If new content URI is null, error with insertion
                 Toast.makeText(this, getString(R.string.editor_insert_book_failed),
                         Toast.LENGTH_SHORT).show();
+                return false;
             } else {
                 //OTherwise insertion was successful and display a toast
                 Toast.makeText(this, getString(R.string.editor_insert_book_successful), Toast.LENGTH_SHORT).show();
+                return true;
             }
         } else {
             //Otherwise this is an existing book, update the book with content URI and pass in new Content Values
@@ -206,9 +208,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if(rowsAffected == 0) {
                 //if no rows affection, error with update
                 Toast.makeText(this, getString(R.string.editor_update_book_failed),Toast.LENGTH_SHORT).show();
+                return false;
             } else {
                 //Otherwise update was successful and display a toast
                 Toast.makeText(this, getString(R.string.editor_update_book_successful), Toast.LENGTH_SHORT).show();
+                return true;
             }
         }
     }
@@ -246,8 +250,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 //Save book to db
                 saveBook();
-                //exit activity 
-                finish();
+                if (!saveBook())
+                    return true;
+                    else {
+                    finish();
+                } //exit activity if book successfully saved/update, stay on activity if not
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
