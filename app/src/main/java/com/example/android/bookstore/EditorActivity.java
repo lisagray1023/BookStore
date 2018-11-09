@@ -23,6 +23,8 @@ import android.content.Loader;
 import android.app.AlertDialog;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 
+import org.w3c.dom.Text;
+
 
 /**
  * Allows user to create a new book or edit an existing one.
@@ -153,7 +155,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /** get user input from editor and save book into database
      *
      */
-    private boolean saveBook() {
+    private void saveBook() {
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
@@ -165,15 +167,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if(mCurrentBookUri == null && TextUtils.isEmpty(nameString) &&
                 TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString)
                 && TextUtils.isEmpty(supplierString) && TextUtils.isEmpty(phoneString)) {
-            return true; }
-            //This means no fields were modified, return early without creatinng a new book
+            finish(); }
+            //This means no fields were modified, return early without creating a new book
 
-            //Check for any null or invalid data
+        if(mCurrentBookUri == null && TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString) ||
+                TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(supplierString) ||
+                TextUtils.isEmpty(phoneString) || phoneString.length() < 10) {
+            Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        /**Check for any null or invalid data
             boolean dataValidation = validateData (nameString, priceString, quantityString, supplierString, phoneString);
                 if (dataValidation == false) {
                     Log.e("EditorActivity", "Invalid data");
                     Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
-                    return false; }
+                    return; } */
 
         //Create a ContentValues object where column names are keys and book attributes are the values
         ContentValues values = new ContentValues();
@@ -193,11 +202,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 //If new content URI is null, error with insertion
                 Toast.makeText(this, getString(R.string.editor_insert_book_failed),
                         Toast.LENGTH_SHORT).show();
-                return false;
+                return;
             } else {
                 //OTherwise insertion was successful and display a toast
                 Toast.makeText(this, getString(R.string.editor_insert_book_successful), Toast.LENGTH_SHORT).show();
-                return true;
+                finish();
             }
         } else {
             //Otherwise this is an existing book, update the book with content URI and pass in new Content Values
@@ -208,11 +217,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if(rowsAffected == 0) {
                 //if no rows affection, error with update
                 Toast.makeText(this, getString(R.string.editor_update_book_failed),Toast.LENGTH_SHORT).show();
-                return false;
+                return;
             } else {
                 //Otherwise update was successful and display a toast
                 Toast.makeText(this, getString(R.string.editor_update_book_successful), Toast.LENGTH_SHORT).show();
-                return true;
+                finish();
             }
         }
     }
@@ -250,11 +259,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 //Save book to db
                 saveBook();
-                if (!saveBook())
-                    return true;
-                    else {
-                    finish();
-                } //exit activity if book successfully saved/update, stay on activity if not
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
