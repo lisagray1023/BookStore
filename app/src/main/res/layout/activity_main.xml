@@ -44,7 +44,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         app:srcCompat="@drawable/book_fab"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"/>
 
     <TextView
         android:id="@+id/text_view"

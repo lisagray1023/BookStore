@@ -10,7 +10,10 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_weight="5">
+    android:layout_weight="5"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
 
     <TextView
     android:id="@+id/name"
@@ -29,15 +32,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$" />
+        android:text="$"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#AEB6BD" />
+        android:textSize="14sp"/>
 </LinearLayout>
 
 
@@ -49,13 +51,15 @@
     <TextView
         android:id="@+id/quantity"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="14sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        android:text="@string/books_remaining" />
+        android:text="@string/books_remaining"
+        android:textSize="14sp"/>
 </LinearLayout>
 </LinearLayout>
 
@@ -70,7 +74,8 @@
     android:layout_marginRight="16dp"
     android:layout_gravity="center"
     android:layout_weight="1"
-    android:backgroundTint="@color/colorPrimary"
+    android:textAllCaps="true"
+    android:textColorHighlight="@color/colorPrimary"
     android:text="@string/sale_button"
     android:focusable="false" />
 
