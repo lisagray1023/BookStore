@@ -165,9 +165,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if(mCurrentBookUri == null && TextUtils.isEmpty(nameString) &&
                 TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString)
                 && TextUtils.isEmpty(supplierString) && TextUtils.isEmpty(phoneString)) {
+            return; }
             //This means no fields were modified, return early without creatinng a new book
-            return;
+
+            //Check for any null or invalid data
+            try {
+                boolean dataValidation = validateData (nameString, priceString, quantityString, supplierString, phoneString);
+                if (dataValidation == false);
         }
+            catch (Exception e) {
+                Log.e("EditorActivity", "Invalid data", e);
+                Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
+            }
+
 
         //Create a ContentValues object where column names are keys and book attributes are the values
         ContentValues values = new ContentValues();
@@ -461,6 +471,30 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText.setText(String.valueOf(currentQuantity));
     }
 
-
+    /** helper method to validate the data and ensure no blank or invalid data is stored in the db */
+    private boolean validateData(String nameString, String quantityString, String priceString,
+                                 String supplierString, String phoneString) {
+        if (TextUtils.isEmpty(nameString)) {
+            Toast.makeText(this, (R.string.required_field), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(quantityString)) {
+            Toast.makeText(this, (R.string.required_field), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(priceString)) {
+            Toast.makeText(this, (R.string.required_field), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(supplierString)) {
+            Toast.makeText(this, (R.string.required_field), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(phoneString) || (phoneString.length()) < 10) {
+            Toast.makeText(this, (R.string.required_field), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
 }

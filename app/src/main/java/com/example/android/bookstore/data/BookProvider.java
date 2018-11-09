@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.android.bookstore.EditorActivity;
 import com.example.android.bookstore.MainActivity;
+import com.example.android.bookstore.R;
 import com.example.android.bookstore.data.BookContract.BookEntry;
 
 public class BookProvider extends ContentProvider {
