@@ -31,6 +31,6 @@
     <string name="quantity_updated">Book sold, quantity updated</string>
     <string name="quantity_update_error">Error updating quantity</string>
     <string name="books_remaining"> Books Remaining</string>
-    <string name="required_field">This field requires a valid entry to save or update a Book</string>
+    <string name="required_field">All fields require a valid entry to save or update a Book</string>
     <string name="name_required">Book requires a name</string>
 </resources>

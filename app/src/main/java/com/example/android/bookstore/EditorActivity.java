@@ -158,7 +158,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String priceString = mPriceEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
         String supplierString = mSupplierNameEditText.getText().toString().trim();
-        String phoneString = mSupplierPhoneEditText.getText().toString().trim();
+        String phoneString = mSupplierPhoneEditText.getText().toString().trim().replaceAll("[^\\d]", "");
 
 
         //Check if this is a new book and check if all fields are blank
