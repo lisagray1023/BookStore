@@ -169,15 +169,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             //This means no fields were modified, return early without creatinng a new book
 
             //Check for any null or invalid data
-            try {
-                boolean dataValidation = validateData (nameString, priceString, quantityString, supplierString, phoneString);
-                if (dataValidation == false);
-        }
-            catch (Exception e) {
-                Log.e("EditorActivity", "Invalid data", e);
-                Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
-            }
-
+            boolean dataValidation = validateData (nameString, priceString, quantityString, supplierString, phoneString);
+                if (dataValidation == false) {
+                    Log.e("EditorActivity", "Invalid data");
+                    Toast.makeText(this, R.string.required_field, Toast.LENGTH_SHORT).show();
+                    return; }
 
         //Create a ContentValues object where column names are keys and book attributes are the values
         ContentValues values = new ContentValues();
@@ -250,7 +246,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 //Save book to db
                 saveBook();
-                //exit activity
+                //exit activity 
                 finish();
                 return true;
             // Respond to a click on the "Delete" menu option
